@@ -1,79 +1,83 @@
-# line-fast-space-01
+# Line Following Robot Project
 
-This repository contains code and resources for the SPACE-01 board, including libraries, drivers, and example programs.
+This repository contains code for line following robots using either SPACE-01 or Sopon boards. The robots use PID control for line following and support various movement patterns.
 
-## Key Features & Benefits
+## Installation
 
-*   Provides necessary libraries and drivers for the SPACE-01 board.
-*   Includes example Arduino sketches for various functionalities like motor control, PID control, and sensor integration.
-*   Offers resources for setting up and using the SPACE-01 board with Arduino.
+### Required Libraries
+1. Install the following libraries via Arduino IDE:
+   ```
+   Arduino > Sketch > Include Library > Add .zip Library
+   ```
+   - SPACE01.zip
+   - light_CD74HC4067.zip
 
-## Prerequisites & Dependencies
+### Driver Installation
+If you have upload issues:
 
-*   Arduino IDE
-*   SPACE-01 Board
-*   CH341SER driver (if required)
-*   light_CD74HC4067 library
-*   SPACE01 library
+1. Connect the board to your computer
+2. Run `Driver/CH341SER.EXE` as administrator
+3. Click Install
+4. Restart your PC
 
-## Installation & Setup Instructions
+## Board Configuration
 
-### Installing Libraries
+Configure your Arduino IDE as follows:
 
-1.  Navigate to the `installation/library` folder.
-2.  There should be two ZIP files named `SPACE01.zip` and `light_CD74HC4067.zip`.
-3.  In the Arduino IDE, go to `Sketch > Include Library > Add .ZIP Library...`
-4.  Select both `SPACE01.zip` and `light_CD74HC4067.zip` and click "Open".
-5.  The libraries are now installed.
+1. Go to `Tools > Board` and select **Arduino Nano**
+2. Select the processor based on your board:
+   - SPACE-01 board: `Tools > Processor > ATmega328P (Old Bootloader)`
+   - Sopon board: `Tools > Processor > ATmega328P`
+3. Select the appropriate COM port under `Tools > Port`
 
-### Installing Drivers (if needed)
+## Project Structure
 
-1.  Connect the SPACE-01 board to your computer via USB.
-2.  Navigate to the `installation/driver` folder.
-3.  Locate the `CH341SER.EXE` file.
-4.  Right-click on `CH341SER.EXE` and select "Run as administrator".
-5.  Click "Install".
-6.  After installation, restart your computer.
+- `board/`
+  - `space-01/` - Code for SPACE-01 board variants
+    - `2000/` - 2000 series configuration
+    - `3000/` - 3000 series configuration
+  - `sopon/` - Code for Sopon board
 
-## Usage Examples & API Documentation
+## Features
 
-Example Arduino sketches are located in the `sopon` and `unkown` directories.  Here's a brief overview:
+- Line following using PID control
+- Sensor calibration
+- Turn functions (left/right)
+- Cross detection
+- Timed movements
+- Motor control
+- Serial debugging support
 
-*   **`sopon` Directory:**
-    *   `Motor.ino`: Example code for controlling motors.
-    *   `PIDcontrol.ino`: Example code for PID control implementation.
-    *   `Sensor.ino`: Example code for reading sensor data.
-    *   `SetupRobot.ino`: Example code for configuring robot settings.
-    *   `Turn.ino`: Example code for robot turning functionality.
-    *   `sopon.ino`:  Main sketch example combining various functionalities.
+## Usage
 
-*   **`unkown` Directory:**
-    *   Contains two subdirectories, `2000` and `3000`, each with `*.ino`, `PID.ino`, `Sensor.ino`, and `Turn.ino` examples, potentially representing different robot or hardware configurations.
+1. Select the appropriate board folder for your hardware
+2. Upload the main .ino file
+3. Use the calibration function to adjust sensors:
+   ```cpp
+   ShowCalibrate();  // Uncomment in setup()
+   ```
+4. Configure movement parameters:
+   ```cpp
+   TrackTime(speed, Kp, Kd, duration);  // Basic line following
+   TrackCross(speed, Kp, Kd, action);   // Line following with intersection detection
+   ```
 
-**Detailed API Documentation:** Specific API documentation for the SPACE01 and light_CD74HC4067 libraries are not included in this repository. Consult the respective library documentation if available.
+## Pin Configuration
 
-## Configuration Options
+### SPACE-01 Board
+- 8 analog sensors (A0-A7)
+- Motor control pins defined in SPACE01 library
 
-Configuration options depend on the specific Arduino sketch being used. Refer to the comments and code within each `*.ino` file for details on configurable parameters such as:
+### Sopon Board
+- 8 analog sensors via MCP3008
+- Motor pins:
+  - PWMA: 5
+  - AIN1: 2
+  - AIN2: 3
+  - PWMB: 6
+  - BIN1: 4
+  - BIN2: 7
 
-*   Motor control parameters (e.g., speed, direction).
-*   PID control gains (Kp, Ki, Kd).
-*   Sensor calibration values.
-*   Robot-specific settings (e.g., wheel diameter, wheelbase).
+## License
 
-## Contributing Guidelines
-
-Contributions are welcome! Please follow these guidelines:
-
-1.  Fork the repository.
-2.  Create a new branch for your feature or bug fix.
-3.  Make your changes and commit them with clear, descriptive messages.
-4.  Submit a pull request.
-
-## License Information
-
-License information is not specified in this repository. All rights are reserved by the owner.
-
-## Acknowledgments
-
-N/A
+This project is provided for educational purposes.
